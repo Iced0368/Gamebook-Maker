@@ -42,6 +42,7 @@ body {
   padding: 10px;
 }
 
+
 .icon-button {
   background-color: transparent;
   border: none;
@@ -76,4 +77,5 @@ body {
 
 .copied-notification.hidden {
   opacity: 0;
+  z-index: -1;
 }

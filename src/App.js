@@ -6,7 +6,7 @@ import { PiClipboardTextBold } from "react-icons/pi";
 
 import TextEditor from "./TextEditor/TextEditor";
 import Tab from "./Tab/Tab";
-import Modal from "./Modal/Modal";
+import ConfirmModal from "./Modal/ConfirmModal";
 
 import {copyToClipboard} from "./util";
 
@@ -48,8 +48,11 @@ function App() {
   };
 
   const handleContentChange = (value) => {
-    if(selectedPage)
-      selectedPage.content = value;
+    const updatedPages = pages.map((page) =>
+      page.id === selectedPage.id ? { ...page, content: value } : page
+    );
+    setPages(updatedPages);
+    setSelectedPage({ ...selectedPage, content: value });
   };
 
   const handleAddPage = () => {
@@ -111,6 +114,8 @@ function App() {
     setPages(reorderedPages);
   };
 
+
+  
   return (
     <div className="app-container">
       <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`}></img>
@@ -164,14 +169,14 @@ function App() {
       </div>
 
 
-      <Modal
+      <ConfirmModal
         isOpen={isDeleteModalOpen}
         title={`${selectedPage ? selectedPage.title : ''} 삭제`}
         content="정말로 삭제하시겠습니까?"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
-      <Modal
+      <ConfirmModal
         isOpen={isClearModalOpen}
         title={`게임북 초기화`}
         content="정말로 초기화 하시겠습니까?"

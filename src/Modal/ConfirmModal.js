@@ -2,7 +2,7 @@
 import React from 'react';
 import './Modal.css';
 
-const Modal = ({ isOpen, title, content, onConfirm, onCancel }) => {
+const InsertRouteModal = ({ isOpen, title, content, onConfirm, onCancel }) => {
   if (!isOpen) {
     return null;
   }
@@ -21,4 +21,4 @@ const Modal = ({ isOpen, title, content, onConfirm, onCancel }) => {
   );
 };
 
-export default Modal;
+export default InsertRouteModal;
