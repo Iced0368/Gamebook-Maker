@@ -1,0 +1,68 @@
+/* App.css */
+body {
+  margin: 0;
+  background-color: #f0f0f0; /* 전체 화면의 배경색 설정 */
+}
+
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  height: 60px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-self: center;
+}
+
+.separator {
+  height: 1px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  width: 100%;
+  background: #ccc;
+}
+
+.tabs-container {
+  width: 200px;
+  height: calc(100vh - 141px);
+  padding-bottom: 40px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.title-editor {
+  height: 30px;
+  font-size: 18px;
+  border: none;
+  padding: 5px;
+}
+
+.editor-container {
+  flex: 1;
+  padding: 10px;
+}
+
+.icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ccc;
+  }
+
+  &:active {
+    background-color: #ddd;
+  }
+}

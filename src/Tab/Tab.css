@@ -1,0 +1,31 @@
+.tab {
+  padding: 8px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+  
+.active-tab {
+  background-color: #a0a0a0;
+  color: black;
+}
+  
+.add-tab {
+  padding: 8px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.clear-tab {
+  padding: 8px;
+  cursor: pointer;
+  background-color: #CD5C5C;
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  margin-top: 10px;
+}

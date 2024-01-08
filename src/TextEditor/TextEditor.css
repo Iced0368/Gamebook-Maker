@@ -1,0 +1,17 @@
+.ql-snow {
+    .ql-picker {
+        &.ql-size {
+            .ql-picker-label, .ql-picker-item {
+                &::before {
+                    content: attr(data-value) !important;
+                }
+            }
+        } 
+    }
+}
+
+/* TextEditor.css */
+.text-editor-container {
+    margin: 10px;
+    flex-direction: column;
+}
