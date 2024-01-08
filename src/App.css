@@ -66,3 +66,22 @@ body {
     background-color: #ddd;
   }
 }
+
+
+.copied-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  z-index: 1000;
+  opacity: 0.9;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.copied-notification.hidden {
+  opacity: 0;
+}

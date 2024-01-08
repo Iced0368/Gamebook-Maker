@@ -19,8 +19,10 @@ function App() {
     || [{ id: pageId, title: '새 페이지', content: '' }]
   );
   const [selectedPage, setSelectedPage] = useState(pages[0]);
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [isCopiedNotificationVisible, setIsCopiedNotificationVisible] = useState(false);
 
   const quillRef = useRef(null);
 
@@ -94,6 +96,12 @@ function App() {
   const copyContentToClipboard = () => {
     const allContent = pages.map((page) => `<details><summary>${page.title}</summary>${page.content}</details>` ).join('\n');
     copyToClipboard(allContent);
+
+    setIsCopiedNotificationVisible(true);
+
+    setTimeout(() => {
+      setIsCopiedNotificationVisible(false);
+    }, 1000);
   }
 
   const moveTab = (fromIndex, toIndex) => {
@@ -105,7 +113,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <img className="logo" src='logo.png'></img>
+      <img className="logo" src={`${process.env.PUBLIC_URL}/logo.png`}></img>
       <hr className="separator" />
       <div style={{ display: 'flex' }}>
         <DndProvider backend={HTML5Backend}>
@@ -126,6 +134,9 @@ function App() {
             <div className="clear-tab" onClick={handleClear}>
               초기화
             </div>
+            <div className="copy-tab" onClick={copyContentToClipboard}>
+              클립보드에 복사
+            </div>
           </div>
         </DndProvider>
 
@@ -138,9 +149,6 @@ function App() {
           />
           <button onClick={handleDeletePage} className="icon-button">
             <GoTrash color='red'/>
-          </button>
-          <button onClick={copyContentToClipboard} className="icon-button">
-            <PiClipboardTextBold color='gray'/>
           </button>
 
           <TextEditor 
@@ -166,6 +174,9 @@ function App() {
         onConfirm={handleConfirmClear}
         onCancel={handleCancelClear}
       />
+      <div className={`copied-notification ${isCopiedNotificationVisible ? '' : 'hidden'}`}>
+        클립보드에 복사되었습니다
+      </div>
     </div>
   );
 }
