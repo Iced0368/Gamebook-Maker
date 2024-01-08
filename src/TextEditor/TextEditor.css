@@ -15,3 +15,10 @@
     margin: 10px;
     flex-direction: column;
 }
+
+.ql-editor{
+    min-height: 250px !important;
+    max-height: calc(100vh - 250px);
+    overflow: hidden;
+    overflow-y: scroll;
+}

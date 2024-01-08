@@ -30,14 +30,6 @@ body {
   background: #ccc;
 }
 
-.tabs-container {
-  width: 200px;
-  height: calc(100vh - 141px);
-  padding-bottom: 40px;
-  border-right: 1px solid #ccc;
-  overflow-y: auto;
-}
-
 .title-editor {
   height: 30px;
   font-size: 18px;

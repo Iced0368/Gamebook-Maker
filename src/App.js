@@ -13,7 +13,7 @@ import {copyToClipboard} from "./util";
 import "./App.css";
 
 function App() {
-  const [pageId, setPageId] = useState(localStorage.getItem('pageId') || 1);
+  const [pageId, setPageId] = useState(Number(localStorage.getItem('pageId')) || 1);
   const [pages, setPages] = useState(
     JSON.parse(localStorage.getItem('savedPages')) 
     || [{ id: pageId, title: '새 페이지', content: '' }]
@@ -118,24 +118,28 @@ function App() {
       <div style={{ display: 'flex' }}>
         <DndProvider backend={HTML5Backend}>
           <div className="tabs-container">
-            {pages.map((page, index) => (
-              <Tab
-                key={page.id}
-                page={page}
-                index={index}
-                moveTab={moveTab}
-                selectedPage={selectedPage}
-                handleTabClick={handleTabClick}
-              />
-            ))}
-            <div className="add-tab" onClick={handleAddPage}>
-              +
+            <div className="tabs-scrollable">
+              {pages.map((page, index) => (
+                <Tab
+                  key={page.id}
+                  page={page}
+                  index={index}
+                  moveTab={moveTab}
+                  selectedPage={selectedPage}
+                  handleTabClick={handleTabClick}
+                />
+              ))}
             </div>
-            <div className="clear-tab" onClick={handleClear}>
-              초기화
-            </div>
-            <div className="copy-tab" onClick={copyContentToClipboard}>
-              클립보드에 복사
+            <div className="function-tab-container">
+              <div className="add-tab" onClick={handleAddPage}>
+                +
+              </div>
+              <div className="clear-tab" onClick={handleClear}>
+                초기화
+              </div>
+              <div className="copy-tab" onClick={copyContentToClipboard}>
+                클립보드에 복사
+              </div>
             </div>
           </div>
         </DndProvider>

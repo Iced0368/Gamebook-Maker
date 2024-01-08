@@ -1,3 +1,16 @@
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: calc(100vh - 141px);
+  padding-bottom: 20px;
+  border-right: 1px solid #ccc;
+}
+
+.tabs-scrollable {
+  overflow-y: auto;
+}
+
 .tab {
   padding: 8px;
   margin-bottom: 5px;
@@ -9,35 +22,32 @@
   background-color: #a0a0a0;
   color: black;
 }
+
+.function-tab-container {
+  margin-top: auto;
+}
   
-.add-tab {
+.add-tab,
+.clear-tab,
+.copy-tab {
+  margin-top: 10px;
   padding: 8px;
   cursor: pointer;
-  background-color: #4caf50;
-  color: white;
   text-align: center;
   border-radius: 3px;
-  margin-top: 10px;
+}
 
-  transition: background-color 1s ease;
+.add-tab {
+  background-color: #4caf50;
+  color: white;
 }
 
 .clear-tab {
-  padding: 8px;
-  cursor: pointer;
   background-color: #CD5C5C;
   color: white;
-  text-align: center;
-  border-radius: 3px;
-  margin-top: 10px;
 }
 
 .copy-tab {
-  padding: 8px;
-  cursor: pointer;
   background-color: gray;
   color: white;
-  text-align: center;
-  border-radius: 3px;
-  margin-top: 10px;
 }
