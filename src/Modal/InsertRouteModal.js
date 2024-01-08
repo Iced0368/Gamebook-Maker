@@ -1,10 +1,15 @@
 // Modal.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Modal.css';
 
 const InsertRouteModal = ({ isOpen, title, onConfirm, onCancel }) => {
     const [routeDescription, setRouteDescription] = useState('');
     const [pageName, setPageName] = useState('');
+
+    useEffect(() => {
+        setRouteDescription('');
+        setPageName('');
+    }, [isOpen]);
 
     if (!isOpen) {
         return null;
@@ -13,6 +18,17 @@ const InsertRouteModal = ({ isOpen, title, onConfirm, onCancel }) => {
     const handleOnConfirm = () => {
         onConfirm(`<br><strong>■ ${routeDescription}(${pageName})</strong></br>`);
     }
+
+    const handleOnCancel = () => {
+        onCancel();
+    }
+
+    const handleEnter = (event) => {
+        if (event.key === 'Enter'){
+            event.preventDefault();
+            handleOnConfirm();
+        }
+    };
 
     return (
         <div className="modal">
@@ -23,7 +39,8 @@ const InsertRouteModal = ({ isOpen, title, onConfirm, onCancel }) => {
                 <input
                     type="text"
                     value={routeDescription}
-                    onChange={(e) => setRouteDescription(e.target.value)}
+                    onInput={(e) => setRouteDescription(e.target.value)}
+                    onKeyDown={handleEnter}
                 />
             </label>
             <label>
@@ -31,12 +48,13 @@ const InsertRouteModal = ({ isOpen, title, onConfirm, onCancel }) => {
                 <input
                     type="text"
                     value={pageName}
-                    onChange={(e) => setPageName(e.target.value)}
+                    onInput={(e) => setPageName(e.target.value)}
+                    onKeyDown={handleEnter}
                 />
             </label>
             <div className="modal-buttons">
-            <button onClick={handleOnConfirm}>확인</button>
-            <button onClick={onCancel}>취소</button>
+                <button onClick={handleOnConfirm}>확인</button>
+                <button onClick={handleOnCancel}>취소</button>
             </div>
         </div>
         </div>
