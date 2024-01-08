@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Gamebook-Maker/static/css/main.24137445.css",
-    "main.js": "/Gamebook-Maker/static/js/main.fbe791de.js",
+    "main.css": "/Gamebook-Maker/static/css/main.490a2564.css",
+    "main.js": "/Gamebook-Maker/static/js/main.b0a6465f.js",
     "static/js/787.964b7c99.chunk.js": "/Gamebook-Maker/static/js/787.964b7c99.chunk.js",
     "index.html": "/Gamebook-Maker/index.html",
-    "main.24137445.css.map": "/Gamebook-Maker/static/css/main.24137445.css.map",
-    "main.fbe791de.js.map": "/Gamebook-Maker/static/js/main.fbe791de.js.map",
+    "main.490a2564.css.map": "/Gamebook-Maker/static/css/main.490a2564.css.map",
+    "main.b0a6465f.js.map": "/Gamebook-Maker/static/js/main.b0a6465f.js.map",
     "787.964b7c99.chunk.js.map": "/Gamebook-Maker/static/js/787.964b7c99.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.24137445.css",
-    "static/js/main.fbe791de.js"
+    "static/css/main.490a2564.css",
+    "static/js/main.b0a6465f.js"
   ]
 }
