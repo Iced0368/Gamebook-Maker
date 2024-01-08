@@ -16,5 +16,21 @@ function copyToClipboard(text) {
     document.body.removeChild(tempElement);
 }
 
+const readFile = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
 
-export {copyToClipboard};
+        reader.onload = (event) => {
+            resolve(event.target.result);
+        };
+
+        reader.onerror = (error) => {
+            reject(error);
+        };
+
+        reader.readAsText(file);
+    });
+};
+
+
+export {copyToClipboard, readFile};

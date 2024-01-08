@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { GoTrash } from "react-icons/go";
-import { PiClipboardTextBold } from "react-icons/pi";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { RiFileUploadFill } from "react-icons/ri";
 
 import TextEditor from "./TextEditor/TextEditor";
 import Tab from "./Tab/Tab";
 import ConfirmModal from "./Modal/ConfirmModal";
 
-import {copyToClipboard} from "./util";
+import { copyToClipboard, readFile } from "./util";
 
 import "./App.css";
 
@@ -16,7 +18,7 @@ function App() {
   const [pageId, setPageId] = useState(Number(localStorage.getItem('pageId')) || 1);
   const [pages, setPages] = useState(
     JSON.parse(localStorage.getItem('savedPages')) 
-    || [{ id: pageId, title: '새 페이지', subtitle: '', content: '' }]
+    || [{ id: 0, title: '새 게임북', content: '' }]
   );
   const [selectedPage, setSelectedPage] = useState(pages[0]);
 
@@ -25,6 +27,7 @@ function App() {
   const [isCopiedNotificationVisible, setIsCopiedNotificationVisible] = useState(false);
 
   const quillRef = useRef(null);
+  const tabScrollRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem('savedPages', JSON.stringify(pages));
@@ -66,13 +69,20 @@ function App() {
   const handleAddPage = () => {
     const newPage = {
       id: pageId+1,
-      title: `새 페이지 (${pageId})`,
+      title: `${pageId} 페이지`,
       subtitle: '',
       content: '',
     };
     setPages([...pages, newPage]);
     setSelectedPage(newPage);
     setPageId(pageId+1);
+
+    setTimeout(() => {
+      const tabScroll = tabScrollRef.current;
+      if (tabScroll) {
+        tabScroll.scrollTop = tabScroll.scrollHeight;
+      }
+    }, 10);
   };
 
   const handleDeletePage = () => {
@@ -91,7 +101,7 @@ function App() {
   };
 
   const handleConfirmClear = () => {
-    setPages([{ id: 1, title: '새 페이지', subtitle: '', content: '' }]);
+    setPages([{ id: 0, title: '새 게임북', content: '' }]);
     setPageId(1);
     setSelectedPage(null);
     setIsClearModalOpen(false);
@@ -106,9 +116,13 @@ function App() {
   }
 
   const copyContentToClipboard = () => {
-    const allContent = pages.map((page) => `<details><summary>${page.title}</summary>${page.content}<br></br></details>` ).join('\n');
-    copyToClipboard(allContent);
+    const allContent = pages.map((page) => 
+      page.id !== 0 ?
+      `<details><summary><strong>${page.title}</strong></summary><p>${page.content}</p></details><hr/>`
+      : `<strong>${page.title}</strong><p>${page.content}</p><hr/>`
+    ).join('\n');
 
+    copyToClipboard(allContent);
     setIsCopiedNotificationVisible(true);
 
     setTimeout(() => {
@@ -116,13 +130,52 @@ function App() {
     }, 1000);
   }
 
+
+  const importSave = async (event) => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            try {
+                const fileContent = await readFile(file);
+                const { pages: importedPages, pageId: importedPageId } = JSON.parse(fileContent);
+
+                setPages(importedPages);
+                setPageId(importedPageId);
+            } catch (error) {
+                console.error('Error reading the file:', error);
+            }
+        }
+    });
+
+    fileInput.click();
+  };
+
+
+  const exportSave = async () => {
+    const content = JSON.stringify({ pages, pageId });
+    const blob = new Blob([content], { type: 'application/json' });
+
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = `${pages[0].title}.json`;
+
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+
+
   const moveTab = (fromIndex, toIndex) => {
     const reorderedPages = [...pages];
     const [movedPage] = reorderedPages.splice(fromIndex, 1);
     reorderedPages.splice(toIndex, 0, movedPage);
     setPages(reorderedPages);
   };
-
 
   
   return (
@@ -132,7 +185,7 @@ function App() {
       <div style={{ display: 'flex' }}>
         <DndProvider backend={HTML5Backend}>
           <div className="tabs-container">
-            <div className="tabs-scrollable">
+            <div className="tabs-scrollable" ref={tabScrollRef}>
               {pages.map((page, index) => (
                 <Tab
                   key={page.id}
@@ -141,6 +194,7 @@ function App() {
                   moveTab={moveTab}
                   selectedPage={selectedPage}
                   handleTabClick={handleTabClick}
+                  draggable={page.id !== 0}
                 />
               ))}
             </div>
@@ -155,6 +209,14 @@ function App() {
                 클립보드에 복사
               </div>
             </div>
+            <div className="file-tab-container">
+              <div className="import-tab" onClick={importSave}>
+                <RiFileUploadFill/>&nbsp;Import
+              </div>
+              <div className="export-tab" onClick={exportSave}>
+                <FaArrowAltCircleDown/>&nbsp;Export
+              </div>
+            </div>
           </div>
         </DndProvider>
 
@@ -165,19 +227,22 @@ function App() {
             value={selectedPage ? selectedPage.title : ''} 
             placeholder='제목'
             onChange={handleTitleChange}
-            style={{width: (selectedPage ? selectedPage.title : '').length * 17 + 25}}
+            style={{width: (selectedPage ? selectedPage.title : '').length * 18 + 20}}
           />
-          <input 
-            className="subtitle-editor"
-            type="text" 
-            value={selectedPage ? selectedPage.subtitle : ''} 
-            placeholder='(부제목)'
-            onChange={handleSubtitleChange}
-          />
-          <button onClick={handleDeletePage} className="icon-button">
-            <GoTrash color='red'/>
-          </button>
-
+          { (selectedPage && selectedPage.id !== 0) ?
+            <input 
+              className="subtitle-editor"
+              type="text" 
+              value={selectedPage ? selectedPage.subtitle : ''} 
+              placeholder='(부제목)'
+              onChange={handleSubtitleChange}
+            /> : null
+          }
+          { (selectedPage && selectedPage.id !== 0) ? 
+            <button onClick={handleDeletePage} className="icon-button">
+              <GoTrash color='red'/>
+            </button> : null
+          }
           <TextEditor 
             value={selectedPage ? selectedPage.content : ''} 
             onChange={handleContentChange}

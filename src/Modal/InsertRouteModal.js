@@ -16,7 +16,7 @@ const InsertRouteModal = ({ isOpen, title, onConfirm, onCancel }) => {
     }
 
     const handleOnConfirm = () => {
-        onConfirm(`<br><strong>■ ${routeDescription}(${pageName})</strong></br>`);
+        onConfirm(`<strong>■ ${routeDescription}(${pageName})</strong><br>`);
     }
 
     const handleOnCancel = () => {
