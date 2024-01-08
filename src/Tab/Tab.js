@@ -31,7 +31,13 @@ const Tab = ({ page, index, moveTab, selectedPage, handleTabClick }) => {
         backgroundColor: page === selectedPage ? '#e0e0e0' : 'white',
       }}
     >
-      {page.title ? page.title : "(빈 제목)"}
+      {
+        <div>
+          {page.title ? page.title : "(빈 제목)"}
+          &nbsp;
+          <span className='subtitle'>{page.subtitle}</span>
+        </div>
+      }
     </div>
   );
 };

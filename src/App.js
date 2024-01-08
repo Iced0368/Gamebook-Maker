@@ -16,7 +16,7 @@ function App() {
   const [pageId, setPageId] = useState(Number(localStorage.getItem('pageId')) || 1);
   const [pages, setPages] = useState(
     JSON.parse(localStorage.getItem('savedPages')) 
-    || [{ id: pageId, title: '새 페이지', content: '' }]
+    || [{ id: pageId, title: '새 페이지', subtitle: '', content: '' }]
   );
   const [selectedPage, setSelectedPage] = useState(pages[0]);
 
@@ -47,6 +47,14 @@ function App() {
     setSelectedPage({ ...selectedPage, title: e.target.value });
   };
 
+  const handleSubtitleChange = (e) => {
+    const updatedPages = pages.map((page) =>
+      page.id === selectedPage.id ? { ...page, subtitle: e.target.value } : page
+    );
+    setPages(updatedPages);
+    setSelectedPage({ ...selectedPage, subtitle: e.target.value });
+  };
+
   const handleContentChange = (value) => {
     const updatedPages = pages.map((page) =>
       page.id === selectedPage.id ? { ...page, content: value } : page
@@ -59,6 +67,7 @@ function App() {
     const newPage = {
       id: pageId+1,
       title: `새 페이지 (${pageId})`,
+      subtitle: '',
       content: '',
     };
     setPages([...pages, newPage]);
@@ -82,7 +91,7 @@ function App() {
   };
 
   const handleConfirmClear = () => {
-    setPages([{ id: 1, title: '새 페이지', content: '' }]);
+    setPages([{ id: 1, title: '새 페이지', subtitle: '', content: '' }]);
     setPageId(1);
     setSelectedPage(null);
     setIsClearModalOpen(false);
@@ -97,7 +106,7 @@ function App() {
   }
 
   const copyContentToClipboard = () => {
-    const allContent = pages.map((page) => `<details><summary>${page.title}</summary>${page.content}</details>` ).join('\n');
+    const allContent = pages.map((page) => `<details><summary>${page.title}</summary>${page.content}<br></br></details>` ).join('\n');
     copyToClipboard(allContent);
 
     setIsCopiedNotificationVisible(true);
@@ -154,7 +163,16 @@ function App() {
             className="title-editor"
             type="text" 
             value={selectedPage ? selectedPage.title : ''} 
-            onChange={handleTitleChange} 
+            placeholder='제목'
+            onChange={handleTitleChange}
+            style={{width: (selectedPage ? selectedPage.title : '').length * 17 + 25}}
+          />
+          <input 
+            className="subtitle-editor"
+            type="text" 
+            value={selectedPage ? selectedPage.subtitle : ''} 
+            placeholder='(부제목)'
+            onChange={handleSubtitleChange}
           />
           <button onClick={handleDeletePage} className="icon-button">
             <GoTrash color='red'/>
