@@ -118,7 +118,7 @@ function App() {
   const copyContentToClipboard = () => {
     const allContent = pages.map((page) => 
       page.id !== 0 ?
-      `<details><summary><strong>${page.title}</strong></summary><p>${page.content}</p></details><hr/>`
+      `<details><summary><strong style="font-size: 18px;">[${page.title}]</strong></summary><p>${page.content}</p></details><hr/>`
       : `<strong>${page.title}</strong><p>${page.content}</p><hr/>`
     ).join('\n');
 
